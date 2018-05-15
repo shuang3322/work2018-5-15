@@ -264,7 +264,6 @@ def work1():
         else:
             print('worry:%s'%cent)
     else:
-        worry.append(name)
         print("\033[0;31;40m worry to more exit system \033[0m")
 work1()
 
