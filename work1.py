@@ -14,17 +14,17 @@ login_dir  = {'alex':'123123','admin':'123123'}
 worry = []
 cent = 0
 while cent < 3:
-    cent +=1
+    cent += 1
     name = str (input("name:").strip())
     password = str (input("password:").strip())
     if  login_dir.get(name) == password :
         if name in worry :
             print('Account Is Disabled;')
-            return
+            break
         else:
             print('welcome')
-            return
+            break
     else:
-        print('worry:%s'%cent)
+        print('worry:%s' % cent)
 else:
     print("\033[0;31;40m worry to more exit system \033[0m")
