@@ -80,6 +80,7 @@ def main():
     程序主入口
     :return:
     """
+    
     while True:
         cmd = input("[staff db]:").strip()
         if not cmd:continue
