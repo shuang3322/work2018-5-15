@@ -59,16 +59,21 @@ def analysis_sentences(cmd):
         print(cmd.split())
         if 'where' in cmd:
             query_clause,where_clause = cmd.split("where")
-
-            matched_records = cml.command_where(where_clause)
+            print("query_clause:",query_clause,"where_clause:",where_clause)
+            # matched_records = cml.command_where(query_clause)
+            # matched_records = cml.command_where(where_clause)
+            matched_records = STAFF_DATA
         else:
-            matched_records = []
-            for index,staff_id in enumerate(STAFF_DATA['id']):
-                record = []
-                for col in COLUMNS:
-                    record.append(STAFF_DATA[col][index])
-                matched_records.append(record)
-            query_clause = cmd
+            # pass
+            matched_records = STAFF_DATA_INDEX
+        query_clause = cmd.split()
+        #     matched_records = []
+        #     for index,staff_id in enumerate(STAFF_DATA['id']):
+        #         record = []
+        #         for col in COLUMNS:
+        #             record.append(STAFF_DATA[col][index])
+        #         matched_records.append(record)
+        #     query_clause = cmd
         cmd_action = cmd.split()[0]
         if cmd_action in syntax_list:
             syntax_list[cmd_action](matched_records,query_clause)
@@ -88,6 +93,7 @@ def main():
         analysis_sentences(cmd)
 
 STAFF_DATA,STAFF_DATA_INDEX = load_db(DB_FILE)
+print("load_db:",)
 for key in STAFF_DATA_INDEX:
     print(key,STAFF_DATA.get(key))
 main()

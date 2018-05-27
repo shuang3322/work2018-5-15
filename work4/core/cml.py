@@ -4,14 +4,19 @@
 from core import Logical as op
 
 def command_find(*args,**kwargs):
+    print(args,kwargs)
     print("command_find")
 def command_delete(*args,**kwargs):
+    print(args,kwargs)
     print("command_delete")
 def command_add(*args,**kwargs):
+    print(args,kwargs)
     print("command_add")
 def command_update(*args,**kwargs):
+    print(args,kwargs)
     print("command_update")
 def command_where(*args,**kwargs):
+    print(args,kwargs)
     print("command_where")
 
     # operators =  {
