@@ -11,8 +11,6 @@ from core import cml
 from core import print_log
 
 DB_FILE = setting.DB_FILE
-COLUMNS = setting.DB_FILE
-
 
 def load_db(db_file):
     """
@@ -33,7 +31,7 @@ def load_db(db_file):
             data[staff_id]['age'] = age
             data[staff_id]['phone'] = phone
             data[staff_id]['dept'] = dept
-            data[staff_id]['enrolled_date'] = enrolled_date
+            data[staff_id]['enroll_date'] = enrolled_date
     return data, data_index_list
 
 
@@ -53,10 +51,9 @@ def analysis_sentences(cmd):
     }
     # find name,age from staff_table where age > 22
     if cmd.split()[0] in ('find', 'add', 'del', 'update'):
-        print(cmd.split())
         if 'where' in cmd:
             query_clause, where_clause = cmd.split("where")
-            matched_records = cml.command_where(query_clause, data)
+            matched_records = cml.command_where(where_clause, STAFF_DATA)
             # matched_records = STAFF_DATA
 
         else:
@@ -73,8 +70,7 @@ def analysis_sentences(cmd):
         matched_index = STAFF_DATA_INDEX
         cmd_action = cmd.split()[0]
         if cmd_action in syntax_list:
-            print(syntax_list[cmd_action], matched_records, matched_index, query_clause)
-            # syntax_list[cmd_action](matched_records, query_clause)
+            syntax_list[cmd_action](matched_records, query_clause)
 
     else:
         print_log.print_log(
