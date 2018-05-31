@@ -70,7 +70,7 @@ def command_update(data, codm, index):
     print("command_update")
 
 
-def command_where(query_clause, data, index):
+def command_where(query_clause, data):
     operators = {
         '>': op.op_gt,
         '<': op.op_lt,
