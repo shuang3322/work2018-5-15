@@ -12,48 +12,65 @@ from core import print_log
 from tabulate import tabulate
 
 
-def command_find(data, codm):
-    print(data, codm)
-    print(setting.COLUMNS)
-    find_key = []
+def command_seve(data_list):
+    print(setting.DB_FILE)
+    with open(setting.DB_FILE, "w", encoding='UTF-8') as f:
+        for item in data_list:
+            set = ",".join(item)
+            f.write(set)
+def command_find(data, codm, index):
+    # print(data, codm)
+    # print(setting.COLUMNS)
     find_key = codm.split()[1].split(",")
     find_list = []
-    fubd_dict = {}
     if '*' in find_key:
-        print(setting.COLUMNS)
         find_key = setting.COLUMNS
-        print(find_key)
         for key in data.keys():
-            find_list.append([[find_key[0],key]])
-            for list_item in find_list:
-                for key,item in data.get(key).items():
-                    list_item.append([key,item])
+            find_list.append([key])
+            find_list_index = find_list.index([key])
+            for list_top in find_key[1:]:
+                find_list[find_list_index].append(data.get(key).get(list_top).strip())
+        find_list = sorted(find_list, key=lambda student: student[0])
     else:
         for key in data.keys():
             list_data = []
             for name in find_key:
                 list_data.append(data.get(key).get(name))
             find_list.append(list_data)
-    print(find_list)
-    print(tabulate(headers=find_key, tabular_data=find_list))
+    # print(find_list)
+    print(tabulate(headers=find_key, tabular_data=find_list, tablefmt="grid"))
 
 
-def command_delete(*args, **kwargs):
-    print(args, kwargs)
+def command_delete(data, codm, index):
+    print(data, codm)
     print("command_delete")
 
 
-def command_add(*args, **kwargs):
-    print(args, kwargs)
+def command_add(data, codm, index):
+    # print(data, codm, index)
+    add_list = []
+    codm1 = codm.replace("add", "")
+    codm1 = codm1.replace("staff_table", "").strip()
+    codm2 = codm1.split(",")
+    codm2.insert(0,str(int(index[-1])+1))
+    for key in index:
+        add_list.append([key])
+        add_list_index = add_list.index([key])
+        for item in setting.COLUMNS[1:]:
+            add_list[add_list_index].append(data.get(key).get(item))
+    else:
+        add_list[-1][-1] += "\n"
+    add_list.append(codm2)
+    command_seve(add_list)
     print("command_add")
 
 
-def command_update(*args, **kwargs):
-    print(args, kwargs)
+def command_update(data, codm, index):
+    print(data, codm)
     print("command_update")
 
 
-def command_where(query_clause, data, ):
+def command_where(query_clause, data, index):
     operators = {
         '>': op.op_gt,
         '<': op.op_lt,

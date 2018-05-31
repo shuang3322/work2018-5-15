@@ -12,6 +12,7 @@ from core import print_log
 
 DB_FILE = setting.DB_FILE
 
+
 def load_db(db_file):
     """
     加载员工信息表，转字典的格式
@@ -59,7 +60,7 @@ def analysis_sentences(cmd):
         else:
             # pass
             matched_records = STAFF_DATA
-            query_clause = cmd.split()
+            query_clause = cmd
         #     matched_records = []
         #     for index,staff_id in enumerate(STAFF_DATA['id']):
         #         record = []
@@ -70,7 +71,7 @@ def analysis_sentences(cmd):
         matched_index = STAFF_DATA_INDEX
         cmd_action = cmd.split()[0]
         if cmd_action in syntax_list:
-            syntax_list[cmd_action](matched_records, query_clause)
+            syntax_list[cmd_action](matched_records, query_clause,matched_index)
 
     else:
         print_log.print_log(
@@ -87,7 +88,8 @@ def main():
         cmd = input("[staff db]:").strip()
         if not cmd: continue
         analysis_sentences(cmd)
-
-
-STAFF_DATA, STAFF_DATA_INDEX = load_db(DB_FILE)
+        global STAFF_DATA, STAFF_DATA_INDEX
+        data, index = load_db(DB_FILE)
+        STAFF_DATA, STAFF_DATA_INDEX = data, index
+STAFF_DATA, STAFF_DATA_INDEX =load_db(DB_FILE)
 main()
