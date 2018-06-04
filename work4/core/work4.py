@@ -1,16 +1,18 @@
 #!/usr/bin/python
 # _*_ coding:utf-8 _*_
-import sys
 import os
+import sys
+import datetime
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(base_dir)
-from tabulate import tabulate
 from conf import setting
 from core import cml
 from core import print_log
 from core import change_file
+
 DB_FILE = setting.DB_FILE
+
 
 def load_db(db_file):
     """
@@ -51,26 +53,21 @@ def analysis_sentences(cmd):
     }
     # find name,age from staff_table where age > 22
     if cmd.split()[0] in ('find', 'add', 'del', 'update'):
+        starttime = datetime.datetime.now()
         if 'where' in cmd:
             query_clause, where_clause = cmd.split("where")
             matched_records = cml.command_where(where_clause, STAFF_DATA)
-            # matched_records = STAFF_DATA
-
         else:
-            # pass
             matched_records = STAFF_DATA
             query_clause = cmd
-        #     matched_records = []
-        #     for index,staff_id in enumerate(STAFF_DATA['id']):
-        #         record = []
-        #         for col in COLUMNS:
-        #             record.append(STAFF_DATA[col][index])
-        #         matched_records.append(record)
-        #     query_clause = cmd
+
         matched_index = STAFF_DATA_INDEX
         cmd_action = cmd.split()[0]
         if cmd_action in syntax_list:
-            syntax_list[cmd_action](matched_records, query_clause,matched_index)
+            syntax_list[cmd_action](matched_records, query_clause, matched_index)
+        endtime = datetime.datetime.now()
+        run_time= endtime - starttime
+        print("执行数据 %s 条，执行时间 %s 毫秒" % (len(matched_records),run_time.microseconds))
 
     else:
         print_log.print_log(
@@ -90,5 +87,7 @@ def main():
         global STAFF_DATA, STAFF_DATA_INDEX
         data, index = change_file.load_db(DB_FILE)
         STAFF_DATA, STAFF_DATA_INDEX = data, index
-STAFF_DATA, STAFF_DATA_INDEX =change_file.load_db(DB_FILE)
+
+
+STAFF_DATA, STAFF_DATA_INDEX = change_file.load_db(DB_FILE)
 main()

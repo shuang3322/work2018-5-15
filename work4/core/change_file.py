@@ -25,7 +25,11 @@ def load_db(db_file):
 
 
 def seve_db(data_list):
-    print(setting.DB_FILE)
+    """
+    保存员工信息表，转字典的格式
+    :param data_list:
+    :return：
+    """
     with open(setting.DB_FILE, "w", encoding='UTF-8') as f:
         for item in data_list:
             set = ",".join(item)
@@ -33,8 +37,12 @@ def seve_db(data_list):
 
 
 def dic_to_list(index, data):
+    """
+    字典转成列表格式
+    :param dic_to_list:index, data
+    :return：dd_list
+    """
     add_list = []
-    print(index)
     for key in index:
         add_list.append([key])
         add_list_index = add_list.index([key])

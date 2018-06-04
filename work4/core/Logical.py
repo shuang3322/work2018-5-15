@@ -3,6 +3,12 @@
 
 
 def op_gt(column, condtion_val, data):
+    '''
+    :param column: 筛选字段
+    :param condtion_val: 筛选条件
+    :param data: 筛选数据
+    :return:
+    '''
     data_dir = {}
     for key, item in data.items():
         if column == 'id':
