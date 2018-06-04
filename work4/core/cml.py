@@ -13,14 +13,6 @@ from core import change_file
 from tabulate import tabulate
 
 
-def command_seve(data_list):
-    print(setting.DB_FILE)
-    with open(setting.DB_FILE, "w", encoding='UTF-8') as f:
-        for item in data_list:
-            set = ",".join(item)
-            f.write(set)
-
-
 def command_find(data, codm, index):
     # print(data, codm)
     # print(setting.COLUMNS)
@@ -74,12 +66,23 @@ def command_add(data, codm, index):
         add_list[-1][-1] += "\n"
     add_list.append(codm2)
     change_file.seve_db(add_list)
-    print("command_add")
+    # print("command_add")
 
 
 def command_update(data, codm, index):
-    print(data, codm)
-    print("command_update")
+    if 'set' in codm and '=' in codm:
+        codm_replace = codm.replace("update staff_table set ", "")
+        codm_replace = codm_replace.split('=')
+        print(codm_replace)
+        for key, item in data.items():
+            item[codm_replace[0]]=codm_replace[1].strip(" \" ")
+        all_data, all_index = change_file.load_db(setting.DB_FILE)
+        all_data.update(data)
+        all_data_list = change_file.dic_to_list(all_index,all_data)
+        change_file.seve_db(all_data_list)
+
+    else:
+        print_log.print_log("语法错误:updata 表格 set 条件 where 筛选条件（where条件只能支持[>,<,=,like]）", 'error')
 
 
 def command_where(query_clause, data):

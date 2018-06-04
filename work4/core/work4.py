@@ -10,8 +10,29 @@ from conf import setting
 from core import cml
 from core import print_log
 from core import change_file
-
 DB_FILE = setting.DB_FILE
+
+def load_db(db_file):
+    """
+    加载员工信息表，转字典的格式
+    :param db_file:
+    :return: data
+    """
+
+    data = {}
+    data_index_list = []
+    with open(db_file, "r", encoding='UTF-8') as f:
+        f1 = f.readlines()
+        for line in f1:
+            staff_id, name, age, phone, dept, enrolled_date = line.split(",")
+            data_index_list.append(staff_id)
+            data[staff_id] = {}
+            data[staff_id]['name'] = name
+            data[staff_id]['age'] = age
+            data[staff_id]['phone'] = phone
+            data[staff_id]['dept'] = dept
+            data[staff_id]['enroll_date'] = enrolled_date
+    return data, data_index_list
 
 
 def analysis_sentences(cmd):
@@ -49,7 +70,7 @@ def analysis_sentences(cmd):
         matched_index = STAFF_DATA_INDEX
         cmd_action = cmd.split()[0]
         if cmd_action in syntax_list:
-            syntax_list[cmd_action](matched_records, query_clause, matched_index)
+            syntax_list[cmd_action](matched_records, query_clause,matched_index)
 
     else:
         print_log.print_log(
@@ -69,7 +90,5 @@ def main():
         global STAFF_DATA, STAFF_DATA_INDEX
         data, index = change_file.load_db(DB_FILE)
         STAFF_DATA, STAFF_DATA_INDEX = data, index
-
-
-STAFF_DATA, STAFF_DATA_INDEX = change_file.load_db(DB_FILE)
+STAFF_DATA, STAFF_DATA_INDEX =change_file.load_db(DB_FILE)
 main()

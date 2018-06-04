@@ -30,3 +30,14 @@ def seve_db(data_list):
         for item in data_list:
             set = ",".join(item)
             f.write(set)
+
+
+def dic_to_list(index, data):
+    add_list = []
+    print(index)
+    for key in index:
+        add_list.append([key])
+        add_list_index = add_list.index([key])
+        for item in setting.COLUMNS[1:]:
+            add_list[add_list_index].append(data.get(key).get(item))
+    return add_list
