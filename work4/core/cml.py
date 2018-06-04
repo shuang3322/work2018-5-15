@@ -5,10 +5,11 @@ import os
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(base_dir)
-
+from core import change_file
 from conf import setting
 from core import Logical as op
 from core import print_log
+from core import change_file
 from tabulate import tabulate
 
 
@@ -18,6 +19,8 @@ def command_seve(data_list):
         for item in data_list:
             set = ",".join(item)
             f.write(set)
+
+
 def command_find(data, codm, index):
     # print(data, codm)
     # print(setting.COLUMNS)
@@ -42,8 +45,17 @@ def command_find(data, codm, index):
 
 
 def command_delete(data, codm, index):
-    print(data, codm)
-    print("command_delete")
+    print(data, codm, index)
+    all_data, all_index = change_file.load_db(setting.DB_FILE)
+    for data_key in data.keys():
+        index.pop(index.index(data_key))
+    add_list = []
+    for key in index:
+        add_list.append([key])
+        add_list_index = add_list.index([key])
+        for item in setting.COLUMNS[1:]:
+            add_list[add_list_index].append(all_data.get(key).get(item))
+    change_file.seve_db(add_list)
 
 
 def command_add(data, codm, index):
@@ -52,7 +64,7 @@ def command_add(data, codm, index):
     codm1 = codm.replace("add", "")
     codm1 = codm1.replace("staff_table", "").strip()
     codm2 = codm1.split(",")
-    codm2.insert(0,str(int(index[-1])+1))
+    codm2.insert(0, str(int(index[-1]) + 1))
     for key in index:
         add_list.append([key])
         add_list_index = add_list.index([key])
@@ -61,7 +73,7 @@ def command_add(data, codm, index):
     else:
         add_list[-1][-1] += "\n"
     add_list.append(codm2)
-    command_seve(add_list)
+    change_file.seve_db(add_list)
     print("command_add")
 
 
